@@ -1,5 +1,8 @@
 ﻿@page
+@using Microsoft.EntityFrameworkCore.Internal
+@using Microsoft.EntityFrameworkCore
 @model IndexModel
+@inject IDbContextFactory<PostContext> _dbContextFactory;
 @{
     ViewData["Title"] = "Home page";
 }
@@ -8,3 +11,27 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+
+@if (Model.Posts != null)
+{
+    <div>
+        @foreach (var post in Model.Posts)
+        {
+            <ul>
+                <li>
+                    @post.PostName
+                </li>
+                <li>
+                    Posted: @post.UploadDate.ToString("dd MMMM yyyy")
+                <li>
+                    <a href="@post.PostUrl" target="_blank"> Link to Website</a>
+                </li>
+                <li>
+                    posted by: @post.UserId
+                </li>
+            </ul>
+        }
+
+    </div>
+}
