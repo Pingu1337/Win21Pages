@@ -1,0 +1,56 @@
+﻿@page "/Posts/{postId?}"
+@model Posts
+@{
+    ViewData["Title"] = "Post";
+}
+
+
+
+<div class="d-block">
+
+@if (Model.viewPost != null)
+{
+    <div class="p-4 pb-2 mb-4 bg-primary text-white rounded-3">
+        <div class="container-fluid py-5">
+            @if (@Model.viewPost.UploadDate >= DateTime.Today)
+            {
+                <h2 class="display-5 fw-light">@Model.viewPost.PostName <span class="badge bg-danger fs-4 mt-1" style=" vertical-align: top;">New</span></h2>
+            }
+            else
+            {
+                <h2 class="display-5 fw-light">@Model.viewPost.PostName </h2>
+            }
+            <hr/>
+            <p class="col-md-8 fs-4 pb-0 mb-0">Posted by: <a asp-page="User" asp-route-userName="@Model.PostUser.UserName" class="text-secondary text-decoration-none">@Model.viewPost.UserId </a></p>
+            <p class="pt-0 mt-0 text-light" >@Model.viewPost.UploadDate.ToString("dd MMMM yyyy")</p>
+            <a href="@Model.viewPost.PostUrl" target="_blank" class="btn btn-outline-secondary btn-lg text-white">Visit Website</a>
+        </div>
+    </div>
+    <div class="row align-items-md-stretch">
+        <div class="col-md-6">
+            <div class="h-100 p-5 text-primary bg-secondary rounded-3">
+                <h2 class="fw-light">See more posts by @Model.viewPost.UserId</h2>
+                <hr/>
+                <p>
+                    View more posts done by <span class="fw-bold">@Model.viewPost.UserId</span> by pressing the button bellow 
+                    or browse through a collection of all users on the <a asp-page="Users" class="text-primary fw-bold">Users</a> page and view a collection of the posts they have uploaded. 
+                    <br/>
+                </p>
+                <a asp-page="User" asp-route-userName="@Model.PostUser.UserName" class="btn btn-outline-primary">View Profile</a>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="h-100 p-5 bg-light border rounded-3">
+                <h2 class="fw-light">Browse the collection</h2>
+                <hr/>
+                <p>
+                    On the collection page we have listed all uploads done by users.<br/>
+                    Browse through the entire collection of posts on the <span class="fw-bold">collection page</span> by pressing the button bellow.
+
+                </p>
+                <a asp-page="Collection" class="btn btn-outline-primary">View Collection</a>
+            </div>
+        </div>
+    </div>
+}
+</div>

@@ -7,31 +7,41 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
+<div class="text-center mb-5">
     <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <p>Win21 online frontend-showcase for static websites.</p>
 </div>
 
 
 @if (Model.Posts != null)
 {
-    <div>
-        @foreach (var post in Model.Posts)
-        {
-            <ul>
-                <li>
-                    @post.PostName
-                </li>
-                <li>
-                    Posted: @post.UploadDate.ToString("dd MMMM yyyy")
-                <li>
-                    <a href="@post.PostUrl" target="_blank"> Link to Website</a>
-                </li>
-                <li>
-                    posted by: @post.UserId
-                </li>
-            </ul>
-        }
-
+    <div class="col-lg-6 m-auto">
+        <div class="list-group">
+            <h3>Latest Uploads</h3>
+            @foreach (var post in Model.Posts)
+            {
+                <a asp-page="Posts" asp-route-postId="@post.Id" class="list-group-item list-group-item-action" aria-current="true">
+                        <input type="hidden" asp-for="postId" value="@post.Id"/>
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">@post.PostName</h5>
+                            @if (@post.UploadDate >= DateTime.Today)
+                            {
+                                <small>@post.UploadDate.ToString("dd MMMM yyyy")<span class="badge bg-danger" style="margin-left: 0.25rem;">New</span> </small>
+                            }
+                            else
+                            {
+                                <small>@post.UploadDate.ToString("dd MMMM yyyy")</small>
+                            }
+                        </div>
+                        <p class="mb-1">@post.PostSize</p>
+                        <small>posted by: @post.UserId </small>
+                </a>
+            }
+        </div>
     </div>
 }
+
+
+
+
+

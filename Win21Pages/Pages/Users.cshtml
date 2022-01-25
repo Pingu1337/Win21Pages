@@ -1,0 +1,96 @@
+﻿@page
+@model Win21Pages.Pages.UserModel
+@{
+}
+<div class="collection-box">
+@if (Model.Posts != null)
+{
+    <div class="col-lg-6 m-auto collection-container" style="margin-bottom: 80px !important">
+        <div class="list-group list-group-flush">
+
+                <h1 class="text-primary fw-lighter text-center">Users</h1>
+
+
+            @foreach (var user in Model.UserList)
+            {
+                <a asp-page="User" asp-route-userName="@user.UserName" class="list-group-item list-group-item-action border-bottom" aria-current="true">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">@user.UserName</h5>
+                    </div>
+                    <p class="mb-1">Posts: @user.NormalizedUserName</p>
+                    <small></small>
+                </a>
+            }
+        </div>
+    </div>
+}
+
+@{
+    var prevDisabled = !Model.UserList.HasPreviousPage ? "disabled" : "text-primary";
+    var nextDisabled = !Model.UserList.HasNextPage ? "disabled" : "text-primary";
+}
+
+@if (Model.UserList.TotalPages > 1)
+{
+<div class="bottom-box">
+    <ul class="pagination justify-content-center">
+        <li class="page-item @prevDisabled">
+            <a asp-page="./Users"
+               asp-route-pageIndex="@(Model.UserList.PageIndex - 1)"
+               class="page-link border-primary @prevDisabled">
+                Previous
+            </a>
+        </li>
+        @{
+
+            if (Model.UserList.PageIndex > 5)
+            {
+                int i = Model.UserList.PageIndex;
+                int maxPages = i + 5;
+                for (i -= 5; i<maxPages; i++)
+                {
+                    if (i <= Model.UserList.TotalPages)
+                    {
+
+                        var p = i;
+                        var pageActive = p == Model.UserList.PageIndex ? "active" : "";
+                        var pageTextColor = p == Model.UserList.PageIndex ? "text-secondary bg-primary " : "text-primary";
+
+                        <li class="page-item @pageActive"><a asp-page="./Users"
+                                                             asp-route-pageIndex="@(p)" 
+                                                             class="page-link border-primary @pageTextColor ">@p</a></li>
+                    }
+                }
+
+            }
+            else
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    var p = i +1;
+                    if (p <= Model.UserList.TotalPages)
+                    {
+                        var pageActive = p == Model.UserList.PageIndex ? "active" : "";
+                        var pageTextColor = p == Model.UserList.PageIndex ? "text-secondary bg-primary " : "text-primary";
+
+                        <li class="page-item @pageActive">
+                            <a asp-page="./Users"
+                               asp-route-pageIndex="@(p)"
+                               class="page-link border-primary @pageTextColor ">@p</a></li>
+                    }
+                }
+            }
+
+        }
+        
+        <li class="page-item  @nextDisabled">
+            <a asp-page="./Users"
+               asp-route-pageIndex="@(Model.UserList.PageIndex + 1)"
+               class="page-link border-primary @nextDisabled">
+                Next
+            </a>
+        </li>
+    </ul>
+</div>
+}
+</div>

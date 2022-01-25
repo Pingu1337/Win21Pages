@@ -14,5 +14,47 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+/*    background: #5A3D62;*/
+}
+
+.bottom-box ul {
+    box-shadow: -1px -1px 5px rgba(0, 0, 0, .1);
+
+    width: fit-content;
+    margin-right: auto;
+    margin-left: auto;
+    border-radius: 1rem;
+    overflow: hidden;
+}
+.bottom-box li a{
+/*    box-shadow: 0px -1px 1px rgba(0, 0, 0, .1);*/
+    border: none;
+    background: none;
+}
+.bottom-box li .disabled {
+    /*    box-shadow: 0px -1px 1px rgba(0, 0, 0, .1);*/
+    border-radius: 1rem !important;
+}
+.bottom-box li .page-link:focus {
+    box-shadow: none !important;
+}
+
+.collection-box {
+    box-shadow: inset -5px -5px 25px 1px rgba(0, 0, 0, 0.08);
+    border: 1px solid #fff;
+    border-radius: 2rem;
+    padding-bottom: 1rem;
+    padding-top: 1rem;
+    width: 50%;
+    margin: auto;
+    padding-left: 0;
+}
+.collection-container {
+    width: 89%;
+}
+@media (max-width: 768px) {
+    .collection-box {
+        width: 100%;
+    }
 }

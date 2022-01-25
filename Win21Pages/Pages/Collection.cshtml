@@ -1,0 +1,101 @@
+﻿@page
+@model Win21Pages.Pages.CollectionModel
+@{
+}
+<div class="collection-box">
+@if (Model.Posts != null)
+{
+    <div class="col-lg-6 m-auto collection-container" style="margin-bottom: 80px !important">
+        <div class="list-group list-group-flush">
+
+                <h1 class="text-primary fw-lighter text-center">Collection</h1>
+
+
+            @foreach (var post in Model.PostList)
+            {
+                <a asp-page="Posts" asp-route-postId="@post.Id" class="list-group-item list-group-item-action border-bottom" aria-current="true">
+                    <input type="hidden" asp-for="postId" value="@post.Id"/>
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">@post.PostName</h5>
+                        @if (@post.UploadDate >= DateTime.Today)
+                        {
+                            <small>@post.UploadDate.ToString("dd MMMM yyyy")<span class="badge bg-danger" style="margin-left: 0.25rem;">New</span> </small>
+                        }
+                        else
+                        {
+                            <small>@post.UploadDate.ToString("dd MMMM yyyy")</small>
+                        }
+                    </div>
+                    <p class="mb-1">@post.PostSize</p>
+                    <small>posted by: @post.UserId </small>
+                </a>
+            }
+        </div>
+    </div>
+}
+
+@{
+    var prevDisabled = !Model.PostList.HasPreviousPage ? "disabled" : "text-primary";
+    var nextDisabled = !Model.PostList.HasNextPage ? "disabled" : "text-primary";
+}
+<div class="bottom-box">
+    <ul class="pagination justify-content-center">
+        <li class="page-item @prevDisabled">
+            <a asp-page="./Collection"
+               asp-route-pageIndex="@(Model.PostList.PageIndex - 1)"
+               class="page-link border-primary @prevDisabled">
+                Previous
+            </a>
+        </li>
+        @{
+
+            if (Model.PostList.PageIndex > 5)
+            {
+                int i = Model.PostList.PageIndex;
+                int maxPages = i + 5;
+                for (i -= 5; i<maxPages; i++)
+                {
+                    if (i <= Model.PostList.TotalPages)
+                    {
+
+                    var p = i;
+                    var pageActive = p == Model.PostList.PageIndex ? "active" : "";
+                    var pageTextColor = p == Model.PostList.PageIndex ? "text-secondary bg-primary " : "text-primary";
+
+                        <li class="page-item @pageActive"><a asp-page="./Collection"
+                                                             asp-route-pageIndex="@(p)" 
+                                                             class="page-link border-primary @pageTextColor ">@p</a></li>
+                    }
+                }
+
+            }
+            else
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    var p = i +1;
+                    if (p <= Model.PostList.TotalPages)
+                    {
+                        var pageActive = p == Model.PostList.PageIndex ? "active" : "";
+                        var pageTextColor = p == Model.PostList.PageIndex ? "text-secondary bg-primary " : "text-primary";
+
+                        <li class="page-item @pageActive">
+                            <a asp-page="./Collection"
+                               asp-route-pageIndex="@(p)"
+                               class="page-link border-primary @pageTextColor ">@p</a></li>
+                    }
+                }
+            }
+
+        }
+        <li class="page-item  @nextDisabled">
+            <a asp-page="./Collection"
+               asp-route-pageIndex="@(Model.PostList.PageIndex + 1)"
+               class="page-link border-primary @nextDisabled">
+                Next
+            </a>
+        </li>
+    </ul>
+</div>
+
+</div>
