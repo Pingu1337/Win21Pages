@@ -20,7 +20,7 @@
             <h3>Latest Uploads</h3>
             @foreach (var post in Model.Posts)
             {
-                <a asp-page="Posts" asp-route-postId="@post.Id" class="list-group-item list-group-item-action" aria-current="true">
+                <a asp-page="/Posts/Index" asp-route-postId="@post.Id" class="list-group-item list-group-item-action" aria-current="true">
                         <input type="hidden" asp-for="postId" value="@post.Id"/>
                         <div class="d-flex w-100 justify-content-between">
                             <h5 class="mb-1">@post.PostName</h5>

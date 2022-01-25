@@ -13,7 +13,7 @@
 
             @foreach (var post in Model.PostList)
             {
-                <a asp-page="Posts" asp-route-postId="@post.Id" class="list-group-item list-group-item-action border-bottom" aria-current="true">
+                <a asp-page="/Posts/Index" asp-route-postId="@post.Id" class="list-group-item list-group-item-action border-bottom" aria-current="true">
                     <input type="hidden" asp-for="postId" value="@post.Id"/>
                     <div class="d-flex w-100 justify-content-between">
                         <h5 class="mb-1">@post.PostName</h5>

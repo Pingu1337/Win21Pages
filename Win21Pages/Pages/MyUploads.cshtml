@@ -1,0 +1,123 @@
+﻿@page "/MyUploads/{userName?}/{pageIndex?}"
+@model Win21Pages.Pages.MyUploadsModel
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@{
+}
+@if (SignInManager.IsSignedIn(User))
+{
+    <div class="p-4 pb-5 mb-4 bg-primary text-white rounded-3">
+        <div class="container-fluid py-5">
+
+            <h2 class="display-5 fw-light">@Model.UserName </h2>
+
+            <hr/>
+            @if (Model.totalPostList.Count >= 1)
+            {
+                <p class="col-md-8 fs-4 pb-0 mb-0">Uploads: @Model.totalPostList.Count</p>
+                <p class="pt-0 mt-0 text-light">Last seen: @Model.totalPostList[0].UploadDate.ToString("dd MMMM yyyy HH:mm")</p>
+            }
+            else
+            {
+                <p class="col-md-8 fs-4 pb-0 mb-0">Uploads: 0</p>
+                <p class="pt-0 mt-0 text-light">@Model.UserName have no uploads yet</p>
+            }
+            <div class="list-group list-group-flush">
+                @if (Model.PostsList != null)
+                {
+                    @foreach (var post in Model.PostsList)
+                    {
+                        <a asp-page="/Posts/Index" asp-route-postId="@post.Id" class="list-group-item list-group-item-action border-bottom" aria-current="true">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">@post.PostName</h5>
+                                @if (@post.UploadDate >= DateTime.Today)
+                                {
+                                    <small>@post.UploadDate.ToString("dd MMMM yyyy")<span class="badge bg-danger" style="margin-left: 0.25rem;">New</span> </small>
+                                }
+                                else
+                                {
+                                    <small>@post.UploadDate.ToString("dd MMMM yyyy")</small>
+                                }
+                            </div>
+                            <p class="mb-1">@post.PostSize</p>
+                            <small>posted by: @post.UserId </small>
+                        </a>
+                    }
+                }
+            </div>
+
+        </div>
+        @{
+            var prevDisabled = !Model.PostsList.HasPreviousPage ? "disabled" : "text-primary";
+            var nextDisabled = !Model.PostsList.HasNextPage ? "disabled" : "text-primary";
+        }
+        @if (Model.totalPostList.Count >= 1)
+        {
+            @if ((Model.PostsList.PageIndex * 10) > Model.totalPostList.Count)
+            {
+                <small>Showing @((Model.PostsList.PageIndex - 1) * 10 + 1)-@(Model.totalPostList.Count) of @Model.totalPostList.Count</small>
+            }
+            else
+            {
+                <small>Showing @((Model.PostsList.PageIndex - 1) * 10 + 1)-@(Model.PostsList.PageIndex * 10) of @Model.totalPostList.Count</small>
+            }
+        }
+
+        @if (Model.totalPostList.Count > 10)
+        {
+            <ul class="pagination justify-content-center">
+                <li class="page-item @prevDisabled">
+                    <a asp-page="./MyUploads"
+                       asp-route-pageIndex="@(Model.PostsList.PageIndex - 1)"
+                       class="page-link border-primary @prevDisabled">
+                        Previous
+                    </a>
+                </li>
+                @{
+                    if (Model.PostsList.PageIndex > 5)
+                    {
+                        int i = Model.PostsList.PageIndex;
+                        int maxPages = i + 5;
+                        for (i -= 5; i < maxPages; i++)
+                        {
+                            if (i <= Model.PostsList.TotalPages)
+                            {
+                                var p = i;
+                                var pageActive = p == Model.PostsList.PageIndex ? "active" : "";
+                                var pageTextColor = p == Model.PostsList.PageIndex ? "text-secondary bg-primary " : "text-primary";
+                                <li class="page-item @pageActive">
+                                    <a asp-page="./MyUploads"
+                                       asp-route-pageIndex="@(p)"
+                                       class="page-link border-primary @pageTextColor ">@p</a></li>
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 0; i < 10; i++)
+                        {
+                            var p = i + 1;
+                            if (p <= Model.PostsList.TotalPages)
+                            {
+                                var pageActive = p == Model.PostsList.PageIndex ? "active" : "";
+                                var pageTextColor = p == Model.PostsList.PageIndex ? "text-secondary bg-primary " : "text-primary";
+                                <li class="page-item @pageActive">
+                                    <a asp-page="./MyUploads"
+                                       asp-route-pageIndex="@(p)"
+                                       class="page-link border-primary @pageTextColor ">@p</a></li>
+                            }
+                        }
+                    }
+                }
+                <li class="page-item  @nextDisabled">
+                    <a asp-page="./MyUploads"
+                       asp-route-pageIndex="@(Model.PostsList.PageIndex + 1)"
+                       class="page-link border-primary @nextDisabled">
+                        Next
+                    </a>
+                </li>
+            </ul>
+        }
+    </div>
+
+}

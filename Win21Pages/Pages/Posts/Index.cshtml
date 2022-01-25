@@ -1,10 +1,8 @@
 ﻿@page "/Posts/{postId?}"
-@model Posts
+@model Index
 @{
     ViewData["Title"] = "Post";
 }
-
-
 
 <div class="d-block">
 
@@ -12,9 +10,10 @@
 {
     <div class="p-4 pb-2 mb-4 bg-primary text-white rounded-3">
         <div class="container-fluid py-5">
+            <a asp-page="/Posts/Delete" asp-route-postId="@Model.viewPost.Id" class="btn btn-outline-danger float-end">Remove</a>
             @if (@Model.viewPost.UploadDate >= DateTime.Today)
             {
-                <h2 class="display-5 fw-light">@Model.viewPost.PostName <span class="badge bg-danger fs-4 mt-1" style=" vertical-align: top;">New</span></h2>
+                <h2 class="display-5 fw-light">@Model.viewPost.PostName <span class="badge bg-danger fs-4 mt-1" style="vertical-align: top;">New</span></h2>
             }
             else
             {
@@ -22,7 +21,7 @@
             }
             <hr/>
             <p class="col-md-8 fs-4 pb-0 mb-0">Posted by: <a asp-page="User" asp-route-userName="@Model.PostUser.UserName" class="text-secondary text-decoration-none">@Model.viewPost.UserId </a></p>
-            <p class="pt-0 mt-0 text-light" >@Model.viewPost.UploadDate.ToString("dd MMMM yyyy")</p>
+            <p class="pt-0 mt-0 text-light">@Model.viewPost.UploadDate.ToString("dd MMMM yyyy")</p>
             <a href="@Model.viewPost.PostUrl" target="_blank" class="btn btn-outline-secondary btn-lg text-white">Visit Website</a>
         </div>
     </div>

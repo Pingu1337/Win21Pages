@@ -1,5 +1,4 @@
 ﻿@page "/User/{userName?}/{pageIndex?}"
-@using System.Security.Cryptography.X509Certificates
 @model User
 @{
     ViewData["Title"] = "User";
@@ -8,8 +7,6 @@
     var prevDisabled = !Model.postList.HasPreviousPage ? "disabled" : "text-primary";
     var nextDisabled = !Model.postList.HasNextPage ? "disabled" : "text-primary";
 }
-
-@*[TODO]: STÄDA UPP*@
 
 <div class="d-block">
 
@@ -31,14 +28,13 @@
                 <p class="col-md-8 fs-4 pb-0 mb-0">Uploads: 0</p>
                 <p class="pt-0 mt-0 text-light">@Model.PostUser have no uploads yet</p>
             }
-
         </div>
         <div class="list-group list-group-flush">
             @if (Model.postList != null)
             {
                 @foreach (var post in Model.postList)
                 {
-                    <a asp-page="Posts" asp-route-postId="@post.Id" class="list-group-item list-group-item-action border-bottom" aria-current="true">
+                    <a asp-page="/Posts/Index" asp-route-postId="@post.Id" class="list-group-item list-group-item-action border-bottom" aria-current="true">
                         <div class="d-flex w-100 justify-content-between">
                             <h5 class="mb-1">@post.PostName</h5>
                             @if (@post.UploadDate >= DateTime.Today)
@@ -56,7 +52,7 @@
                 }
             }
         </div>
-        
+
         @if (Model.totalPostList.Count >= 1)
         {
             @if ((Model.postList.PageIndex * 10) > Model.totalPostList.Count)
@@ -68,7 +64,7 @@
                 <small>Showing @((Model.postList.PageIndex - 1) * 10 + 1)-@(Model.postList.PageIndex * 10) of @Model.totalPostList.Count</small>
             }
         }
-        
+
         @if (Model.totalPostList.Count > 10)
         {
             <ul class="pagination justify-content-center">
@@ -80,7 +76,6 @@
                     </a>
                 </li>
                 @{
-
                     if (Model.postList.PageIndex > 5)
                     {
                         int i = Model.postList.PageIndex;
@@ -89,18 +84,15 @@
                         {
                             if (i <= Model.postList.TotalPages)
                             {
-
                                 var p = i;
                                 var pageActive = p == Model.postList.PageIndex ? "active" : "";
                                 var pageTextColor = p == Model.postList.PageIndex ? "text-secondary bg-primary " : "text-primary";
-
                                 <li class="page-item @pageActive">
                                     <a asp-page="./User"
                                        asp-route-pageIndex="@(p)"
                                        class="page-link border-primary @pageTextColor ">@p</a></li>
                             }
                         }
-
                     }
                     else
                     {
@@ -111,7 +103,6 @@
                             {
                                 var pageActive = p == Model.postList.PageIndex ? "active" : "";
                                 var pageTextColor = p == Model.postList.PageIndex ? "text-secondary bg-primary " : "text-primary";
-
                                 <li class="page-item @pageActive">
                                     <a asp-page="./User"
                                        asp-route-pageIndex="@(p)"
@@ -119,7 +110,6 @@
                             }
                         }
                     }
-
                 }
                 <li class="page-item  @nextDisabled">
                     <a asp-page="./User"
@@ -135,13 +125,13 @@
     <div class="row align-items-md-stretch">
         <div class="col-md-6">
             <div class="h-100 p-5 text-primary bg-secondary rounded-3">
-                <h2 class="fw-light">Browse the collection</h2>
+                <h2 class="fw-light">View all users</h2>
                 <hr/>
                 <p>
                      Browse through a collection of all users on the <a asp-page="Users" class="text-primary fw-bold">Users</a> page and view a collection of the posts they have uploaded. 
                     <br/>
                 </p>
-                <a asp-page="Users" asp-route-postId="@User" class="btn btn-outline-primary">View Profile</a>
+                <a asp-page="Users" class="btn btn-outline-primary">View all users</a>
             </div>
         </div>
         <div class="col-md-6">

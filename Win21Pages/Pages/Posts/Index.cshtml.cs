@@ -1,13 +1,14 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Win21Pages.Data;
 using Win21Pages.Models;
 
-namespace Win21Pages.Pages
+namespace Win21Pages.Pages.Posts
 {
-    public class Posts : PageModel
+    public class Index : PageModel
     {
         private readonly ILogger<PrivacyModel> _logger;
         private readonly IDbContextFactory<PostContext> _dbContextFactory;
@@ -15,10 +16,10 @@ namespace Win21Pages.Pages
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
 
-        public Posts(ILogger<PrivacyModel> logger,
+        public Index(ILogger<PrivacyModel> logger,
             IDbContextFactory<PostContext> dbContextFactory,
             ApplicationDbContext userContext,
-            UserManager<IdentityUser> userManager,
+            UserManager<IdentityUser> userManager,  
             SignInManager<IdentityUser> signInManager)
         {
             _logger = logger;
@@ -32,10 +33,14 @@ namespace Win21Pages.Pages
         public Post? viewPost { get; set; }
         [BindProperty]
         public IdentityUser PostUser { get; set; }
+        public IdentityUser SignedInUser { get; set; }
 
 
         public async Task OnGet(int postID)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            SignedInUser = await _userManager.Users.Where(u => u.Id == userId).FirstOrDefaultAsync();
+
             await using (var ctx = _dbContextFactory.CreateDbContext())
             {
                 viewPost = await ctx
