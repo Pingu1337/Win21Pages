@@ -1,0 +1,85 @@
+﻿@page "/page/{postid?}"
+@model Win21Pages.Pages.Page.PageIndexModel
+@{
+}
+
+@if (Model.pagePost != null)
+{
+    <div class="GoBackBox HideBox" id="GoBackBox">
+        <a asp-page="/Collection" class="text-black">Go Back</a>
+    </div>
+    <div class="alert alert-light alert-dismissible intro-alert" role="alert" id="IntroText">
+        <h4 class="intro-text fw-light">Press "Shift + Backspace" to toggle the "Go Back Button"</h4>
+        <button type="button" style="top: 0.25rem;" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div class="iframe-container">
+        @*<iframe src="/UserData/18861ddf-f74c-4dc9-aa45-edcbf1faeabe/Totoro/index.html" width="100%" height="100%" allowfullscreen="true"></iframe>*@
+        <iframe id="frame" src="/UserData/@Model.pagePost.UserId/@Model.pagePost.PostName/index.html" width="100%" height="100%" allowfullscreen="true"></iframe>
+    </div>
+}
+else
+{
+    <div class="p-4 pb-4 mb-4 bg-primary text-white rounded-3 text-center">
+        <div class="container-fluid py-5">
+            <h2 class="display-5 fw-light">@Model.Message </h2>
+            <hr style="width: 50%; margin-left: auto; margin-right: auto;"/>
+            <div class="d-grid col-3 pt-1 mx-auto">
+                <a asp-page="/Collection" class="btn btn-outline-secondary">Go back</a>
+            </div>
+        </div>
+    </div>
+}
+
+<script src="~/js/iframeScript.js"></script>
+
+
+<style>
+    .intro-alert {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 30%;
+        right: 30%;
+        z-index: 99;
+        text-align: center;
+    }
+    .intro-text {
+        text-align: center;
+    }
+    .HideBox {
+        display: none;
+    }
+    .GoBackBox {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: white;
+        width: 80px;
+        height: 30px;
+        z-index: 99;
+    }
+    .GoBackBox a {
+        text-decoration: none;
+        padding-left: 0.75rem;
+        padding-bottom: 0.75rem;
+        padding-right: 0.6rem;
+    }
+
+    .iframe-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+    footer {
+        display: none;
+    }
+
+    @@media screen and (max-width: 900px) {
+        .intro-alert {
+            left: 0;
+            right: 0;
+        }
+    }
+</style>

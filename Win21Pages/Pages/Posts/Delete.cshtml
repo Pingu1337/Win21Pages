@@ -5,12 +5,31 @@
 @inject UserManager<IdentityUser> UserManager
 
 
-@if (@Model.Message != null)
+@if (@Model.Message == "ACCESS DENIED")
 {
     <div class="px-5 mx-auto rounded-3 border-danger" style="background: lightyellow; width: fit-content; border: 3px solid;">
         <h1 class="text-danger text-center py-5">@Model.Message</h1>
     </div>
 }
+@if (@Model.Message == "An unexpected error occurred... try again later...")
+{
+    <div class="px-5 my-3 mx-auto rounded-3 border-danger" style="background: lightyellow; width: fit-content; border: 3px solid;">
+        <h1 class="text-danger text-center py-5">@Model.Message</h1>
+    </div>
+}
+@if (@Model.Message == "Post Removed!")
+{
+    <div class="d-block m-auto w-50">
+        <div class="px-5 mx-auto rounded-3 border-success w-100" style="background: #f0fff0; width: fit-content; border: 3px solid;">
+            <h1 class="text-success text-center p-5">@Model.Message</h1>
+        </div>
+        <div class="text-center pt-1 mx-auto w-100 d-flex">
+            <a class="btn btn-outline-primary w-100" style="margin-right: 0.1rem;" asp-area="" asp-page="/Index">Home</a>
+            <a class="btn btn-primary w-100" style="margin-left: 0.1rem;" asp-area="" asp-page="/MyUploads">MyUploads</a>
+        </div>
+    </div>
+}
+
 
 @if (@Model.RemovablePost != null)
 {
@@ -26,7 +45,7 @@
     </div>
 
 
-    
+
 
     <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="AreYouSure" tabindex="-1" aria-labelledby="AreYouSureLabel" aria-hidden="true">
         <div class="modal-dialog">

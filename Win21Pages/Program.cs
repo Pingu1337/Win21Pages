@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Win21Pages;
 using Win21Pages.Data;
 using Win21Pages.Models;
@@ -36,7 +37,18 @@ else
 }
 
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
+var contentRoot = app.Configuration.GetValue<string>(WebHostDefaults.ContentRootKey);
+contentRoot += "/UserData";
+
+app.UseStaticFiles(new StaticFileOptions()
+{
+    FileProvider = new PhysicalFileProvider(contentRoot),
+    RequestPath = new PathString("/UserData")
+});
+
+app.UseDefaultFiles();
 
 app.UseRouting();
 
