@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\Controllers\" />
+    <Folder Include="UserData\" />
   </ItemGroup>
 
 </Project>

@@ -45,10 +45,16 @@ if (!HaveSeenBanner) {
 
 
 
-iframe.contentDocument.addEventListener("keydown", (evt) => {
-    if (evt.shiftKey && evt.keyCode == 8) {
-        GoBackBox.classList.toggle("HideBox");
-    }
-});
+async function logKeys() {
+    await sleep(1000);
+    iframe.contentDocument.addEventListener("keydown", (evt) => {
+        if (evt.shiftKey && evt.keyCode == 8) {
+            GoBackBox.classList.toggle("HideBox");
+        }
+    });
+}
+
+logKeys();
+
 
 
